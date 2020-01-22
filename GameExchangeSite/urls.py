@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from GameExchangeSite.GameExchange.Views import views
+from GameExchangeSite.GameExchange.Views import views, price
 
 router = routers.DefaultRouter()
 router.register(r'games', views.GameViewSet)
-router.register(r'prices', views.PriceViewSet)
+router.register(r'prices', price.PriceViewSet)
 router.register(r'platforms', views.PlatformViewSet)
 router.register(r'users', views.UserViewSet)
 

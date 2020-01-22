@@ -5,10 +5,16 @@ from django.contrib.auth.models import User, Group
 
 
 class GameSerializer(serializers.HyperlinkedModelSerializer):
+    #price = serializers.FloatField()
+    #name = serializers.StringRelatedField()
+    price_to_set = serializers.FloatField(allow_null=True, write_only=True, label='price', required=True)
     class Meta:
         model = Game
         fields = '__all__'
-        read_only_fields = ('user',)
+        read_only_fields = ('user', 'price')
+
+    def create(self, validated_data):
+        pass
 
 
 class PriceSerializer(serializers.HyperlinkedModelSerializer):

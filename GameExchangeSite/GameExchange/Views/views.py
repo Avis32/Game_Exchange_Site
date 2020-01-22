@@ -1,7 +1,7 @@
+from django.http import JsonResponse
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from GameExchangeSite.GameExchange.Services.game_service import GameService
 from GameExchangeSite.GameExchange.serializers import GameSerializer, PriceSerializer, PlatformSerializer, UserSerializer, GroupSerializer
 from GameExchangeSite.GameExchange.models import Game, Price, Platform
 from django.contrib.auth.models import User, Group
@@ -17,26 +17,15 @@ class GameViewSet(viewsets.ModelViewSet):
     serializer_class = GameSerializer
 
 
-class PriceViewSet(mixins.UpdateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   viewsets.GenericViewSet):
-    queryset = Price.objects.all()
-    serializer_class = PriceSerializer
-
-
-@api_view()
-def hello_world(request):
-    return Response({"message": "Hello, world!"})
-
-
 class PlatformViewSet(viewsets.ModelViewSet):
     queryset = Platform.objects.all()
     serializer_class = PlatformSerializer
 
-    @action(detail=True)
-    def games(self, request, pk=None):
-        queryset = Response(GameService().get_all_games_for_platform(pk))
-        serializer_class = GameSerializer
+    @action(detail=True, methods=['GET'])
+    def games(self, request, pk):
+        queryset = Game.objects.filter(platform=pk)
+        serializer = GameSerializer(queryset, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
 class UserViewSet(viewsets.ModelViewSet):
