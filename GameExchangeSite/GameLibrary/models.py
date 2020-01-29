@@ -24,7 +24,7 @@ class Game(models.Model):
     added_date = models.DateField(auto_now=True, blank=False)
     location = models.TextField(blank=True)
     review = models.TextField(max_length=512)
-    price = models.OneToOneField(Price, on_delete=models.CASCADE, related_name='game')
+    price = models.OneToOneField(Price, on_delete=models.CASCADE, related_name='game', blank=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     platform = models.ForeignKey('Platform', on_delete=models.CASCADE, related_name='games')
 
